@@ -1,0 +1,3 @@
+[submodule "ucipp"]
+	path = ucipp
+	url = https://github.com/lpfgarcia/ucipp.git
