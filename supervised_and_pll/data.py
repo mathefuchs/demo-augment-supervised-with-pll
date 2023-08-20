@@ -146,6 +146,7 @@ def get_all_datasets() -> Dict[str, Dataset]:
                 onehot_df = df[col].astype(str).str.get_dummies()
                 for i, onehot_col in enumerate(map(str, onehot_df)):
                     df[f"{col}_{i}"] = onehot_df[onehot_col].astype(float)
+                    df = df.copy()
                 df.drop(col, axis=1, inplace=True)
             elif type == "numeric":
                 # Parse as float
@@ -153,7 +154,7 @@ def get_all_datasets() -> Dict[str, Dataset]:
                 cols.remove(col)
                 cols.append(col)
                 df[col] = df[col].astype(float)
-                df = df[cols].copy()
+                df = df[cols]
             else:
                 # Unknown type
                 raise ValueError(f"Unknown column type: {type}")
@@ -163,7 +164,7 @@ def get_all_datasets() -> Dict[str, Dataset]:
         y_raw = df["Class"].values
 
         # Exclude zero-variance features
-        x_raw = x_raw[:, x_raw.var(axis=0) > 1e-6]
+        x_raw = x_raw[:, x_raw.var(axis=0) >= 1e-10]
 
         # Extract cardinalities
         n_samples = x_raw.shape[0]
