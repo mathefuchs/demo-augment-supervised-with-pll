@@ -3,11 +3,10 @@
 from glob import glob
 from typing import Dict
 
-from scipy.io import arff
 import numpy as np
 import pandas as pd
+from scipy.io import arff
 from sklearn.model_selection import train_test_split
- 
 
 UCI_DATA = list(sorted(
     glob("./ucipp/uci/*.arff")
@@ -131,7 +130,7 @@ def get_all_datasets() -> Dict[str, Dataset]:
             data, meta = arff.loadarff(path)
         except:
             continue
-        if len(data) < 10 or len(data) > 100000 or len(meta.names()) > 1000:
+        if len(data) > 100000 or len(meta.names()) > 1000:
             continue
 
         df = pd.DataFrame.from_records(data)
