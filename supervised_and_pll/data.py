@@ -153,7 +153,7 @@ def get_all_datasets() -> Dict[str, Dataset]:
                 cols.remove(col)
                 cols.append(col)
                 df[col] = df[col].astype(float)
-                df = df[cols]
+                df = df[cols].copy()
             else:
                 # Unknown type
                 raise ValueError(f"Unknown column type: {type}")
