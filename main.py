@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import matthews_corrcoef
-from sklearn.neighbors import KNeighborsClassifier
 from tqdm import tqdm
 
 from supervised_and_pll.data import Datasplit, get_all_datasets
