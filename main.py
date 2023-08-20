@@ -28,9 +28,8 @@ if __name__ == "__main__":
 
             # Train KNN classifier
             n_neighbors = int(math.ceil(np.log2(datasplit.x_train.shape[0])))
-            knn_clf = KNeighborsClassifier(n_neighbors=n_neighbors, n_jobs=-1)
-            knn_clf.fit(datasplit.x_train, datasplit.y_true_train)
-            knn_test_pred = knn_clf.predict(datasplit.x_test)
+            knn_clf = KnnPll(datasplit, n_neighbors=n_neighbors)
+            knn_test_pred = knn_clf.get_test_pred()[0]
             score = matthews_corrcoef(datasplit.y_true_test, knn_test_pred)
             row.append(score)
 
@@ -45,7 +44,7 @@ if __name__ == "__main__":
 
             # Improve indecisive predictions with partial label learning
             datasplit.y_test = np.where(
-                (proba_test.T >= 0.5 * np.max(proba_test, axis=1)).T, 1, 0).copy()
+                (proba_test.T >= 0.9 * np.max(proba_test, axis=1)).T, 1, 0).copy()
             knn_pll = KnnPll(datasplit, n_neighbors=n_neighbors)
             score = matthews_corrcoef(
                 datasplit.y_true_test, knn_pll.get_test_pred()[0])
